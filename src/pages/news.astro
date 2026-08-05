@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+
+const news = [
+  { date: 'October 2024', title: 'JAAX New York has moved', body: 'We are partnering with RANSD+ to provide project and construction management services from coast to coast.' },
+  { date: 'August 2024', title: 'Gentle Monster Las Vegas', body: 'Grand opening of the Gentle Monster Las Vegas flagship at the Forum Shops.' },
+  { date: 'May 2024', title: 'Optiv pod public viewing', body: 'The first American market prototype is ready for public viewing at the JAAX Los Angeles office, alongside systems from Ceragem, InBody and M20.' },
+  { date: 'May 2024', title: 'Jentle Salon pop-up events', body: 'New York opened May 1–12 at 45 Grand Street. Costa Mesa followed June 1–20 at South Coast Plaza.' },
+  { date: 'March 2024', title: 'JAAX Los Angeles has moved!', body: 'We are still part of the DTLA community.' },
+  { date: 'July 2023', title: 'KG Group HQ Tower competition', body: 'JAAX + AA Archigroup team won the invited competition to design the facade + additions for KG Group’s HQ Tower in Seoul.' },
+  { date: 'June 2023', title: 'Wilshire Financial Tower repositioning', body: 'First phase of building repositioning has completed at Wilshire Financial Tower in Los Angeles. Phase I included the building reclad, renovation of the entry lobby, elevator lobbies and the parking structure.' },
+  { date: 'May 2023', title: 'Gentle Monster Houston Flagship', body: 'Grand opening at the Galleria.' },
+  { date: 'February 2023', title: 'Cherry Valley retreat village', body: 'JAAX was selected as the masterplan architect and the lead designer for the Catholic retreat village in the mountains of Cherry Valley.' },
+];
+---
+
+<BaseLayout title="News — JAAX">
+  <SiteHeader />
+  <main class="inner-page news-page">
+    <header class="page-title">
+      <h1>News</h1>
+    </header>
+    <div class="sticky-section-line" aria-hidden="true"></div>
+    <div class="news-scroll-region">
+      <div class="news-grid-lines" aria-hidden="true">
+        <span class="news-grid-line news-grid-line--date"></span>
+        <span class="news-grid-line news-grid-line--description"></span>
+      </div>
+      <ol class="news-list" aria-label="News archive" tabindex="0">
+        {news.map((item) => (
+          <li data-news-preview>
+            <time class="body-copy">{item.date}</time>
+            <h2 class="section-label">{item.title}</h2>
+            <p class="body-copy">{item.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="news-cursor-preview" aria-hidden="true">
+      <img src="/images/project-placeholder.svg" alt="" />
+    </div>
+  </main>
+  <script>
+    import { setupBottomScrollLock } from '../scripts/bottomScrollLock';
+
+    const preview = document.querySelector<HTMLElement>('.news-cursor-preview');
+    const newsRegion = document.querySelector<HTMLElement>('.news-scroll-region');
+    const newsList = document.querySelector<HTMLOListElement>('.news-list');
+    const previewRows = Array.from(document.querySelectorAll<HTMLElement>('[data-news-preview]'));
+    let activeFrame = 0;
+
+    const syncListSpacing = () => {
+      if (!newsRegion || !newsList || previewRows.length === 0) return;
+      const firstRow = previewRows[0];
+      const lastRow = previewRows[previewRows.length - 1];
+      const startSpace = Math.max(0, (newsRegion.clientHeight - firstRow.offsetHeight) / 2);
+      const endSpace = Math.max(0, (newsRegion.clientHeight - lastRow.offsetHeight) / 2);
+      newsList.style.setProperty('--news-list-start-space', `${startSpace}px`);
+      newsList.style.setProperty('--news-list-end-space', `${endSpace}px`);
+    };
+
+    const syncActiveNews = () => {
+      if (!newsRegion || previewRows.length === 0) return;
+      const regionBounds = newsRegion.getBoundingClientRect();
+      const regionCenter = regionBounds.top + regionBounds.height / 2;
+      let closestRow = previewRows[0];
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      previewRows.forEach((row) => {
+        const rowBounds = row.getBoundingClientRect();
+        const distance = Math.abs(rowBounds.top + rowBounds.height / 2 - regionCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestRow = row;
+        }
+      });
+
+      previewRows.forEach((row) => {
+        const active = row === closestRow;
+        row.classList.toggle('is-active', active);
+        if (active) row.setAttribute('aria-current', 'true');
+        else row.removeAttribute('aria-current');
+      });
+    };
+
+    const requestActiveNewsSync = () => {
+      if (activeFrame) return;
+      activeFrame = window.requestAnimationFrame(() => {
+        activeFrame = 0;
+        syncActiveNews();
+      });
+    };
+
+    const movePreview = (event: PointerEvent) => {
+      if (!preview) return;
+      const offset = 22;
+      const width = preview.offsetWidth;
+      const height = preview.offsetHeight;
+      const x = Math.min(event.clientX + offset, window.innerWidth - width - offset);
+      const y = Math.min(event.clientY + offset, window.innerHeight - height - offset);
+      preview.style.transform = `translate3d(${Math.max(offset, x)}px, ${Math.max(offset, y)}px, 0)`;
+    };
+
+    previewRows.forEach((row) => {
+      row.addEventListener('pointerenter', (event) => {
+        if (event.pointerType === 'touch') return;
+        preview?.classList.add('is-visible');
+        movePreview(event);
+      });
+      row.addEventListener('pointermove', movePreview);
+      row.addEventListener('pointerleave', () => preview?.classList.remove('is-visible'));
+    });
+
+    window.addEventListener('scroll', () => preview?.classList.remove('is-visible'), { passive: true });
+    newsList?.addEventListener('scroll', () => {
+      preview?.classList.remove('is-visible');
+      requestActiveNewsSync();
+    }, { passive: true });
+
+    const newsResizeObserver = new ResizeObserver(() => {
+      syncListSpacing();
+      requestActiveNewsSync();
+    });
+    if (newsRegion) newsResizeObserver.observe(newsRegion);
+    previewRows.forEach((row) => newsResizeObserver.observe(row));
+    syncListSpacing();
+    if (newsList) newsList.scrollTop = 0;
+    syncActiveNews();
+    if (newsList) setupBottomScrollLock(newsList);
+  </script>
+</BaseLayout>

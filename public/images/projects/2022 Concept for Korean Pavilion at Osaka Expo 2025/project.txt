@@ -1,0 +1,8 @@
+title: Concept for Korean Pavilion at Osaka Expo 2025
+year: 2022
+categories: Cultural, Concept Development
+home: yes
+website:
+video: https://player.vimeo.com/video/873964180?quality=1080p&autoplay=1&muted=1&loop=1&controls=0&h=0e6862e2aa&title=0&byline=0&portrait=0
+intro:
+JAAX with Ivan Bernal Architects + Kent State University.

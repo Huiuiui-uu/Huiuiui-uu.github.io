@@ -1,0 +1,33 @@
+---
+const currentPath = Astro.url.pathname;
+
+interface Props {
+  home?: boolean;
+}
+
+const { home = false } = Astro.props;
+---
+
+<header class:list={['site-header', { 'site-header--home': home }]}>
+  <a class="studio-mark" href="/" aria-label="JAAX home">J A A X</a>
+  <nav aria-label="Primary navigation">
+    <a class:list={{ active: currentPath === '/' }} href="/">Home</a>
+    <a class:list={{ active: currentPath === '/about' }} href="/about">About</a>
+    <a class:list={{ active: currentPath.startsWith('/work') || currentPath.startsWith('/projects') }} href="/work" data-work-menu-trigger>Work</a>
+    <a class:list={{ active: currentPath === '/news' }} href="/news">News</a>
+    <a class:list={{ active: currentPath === '/contact' }} href="/contact">Contact</a>
+  </nav>
+</header>
+<script>
+  const siteHeader = document.querySelector<HTMLElement>('.site-header');
+
+  const syncHeaderHeight = () => {
+    if (!siteHeader) return;
+    document.documentElement.style.setProperty('--site-header-height', `${siteHeader.offsetHeight}px`);
+  };
+
+  if (siteHeader) {
+    new ResizeObserver(syncHeaderHeight).observe(siteHeader);
+    syncHeaderHeight();
+  }
+</script>

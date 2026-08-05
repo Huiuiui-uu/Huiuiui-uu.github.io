@@ -1,0 +1,8 @@
+title: Showcase Americana
+year: 2016
+categories: Concept Development, Commercial
+home: no
+website:
+intro:
+Samsung Electronics commissioned JAAX to perform an extensive research on the current landscape of residential design in America. Following the study, JAAX designed several gallery spaces at the Samsung Design Lab, to be used during their development of new home appliances.
+

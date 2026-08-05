@@ -1,0 +1,11 @@
+title: Petals Kindergarten
+year: 2021
+categories: Others
+home: no
+website:
+intro:
+A floating kindergarten above an existing garden on a slope, in Berlin. The building is imagined to be a series of tree houses where classrooms, play rooms and nap rooms area sprinkled along a continuous pathway of steps, ramps and slides. These trees are placed along the perimeter of the site, internalizing a courtyard that allows for not only ample natural light in the spaces, but a physical and visual connection to the garden and playground below.
+
+Images coming soon.
+
+

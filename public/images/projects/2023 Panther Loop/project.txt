@@ -1,0 +1,7 @@
+title: Panther Loop
+year: 2023
+categories: Masterplan, Mixed-Use, Residential
+home: yes
+website:
+intro:
+A mixed-use development featuring 478 apartment units and 43,000sf of retail/commercial space in the Northern Austin area. Currently in schematic design.

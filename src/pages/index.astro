@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getProjectCatalog } from '../data/projectCatalog';
+
+const projects = getProjectCatalog()
+  .filter((project) => project.tags.includes('home'));
+---
+
+<BaseLayout title="JAAX — Architecture, Urbanism and Interiors">
+  <section class="landing-video" aria-label="JAAX film">
+    <iframe
+      id="landing-player"
+      src="https://www.youtube.com/embed/CzN5vDIIofw?feature=oembed&enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=CzN5vDIIofw&playsinline=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&cc_load_policy=0&rel=0&modestbranding=1&vq=hd1440"
+      title="JAAX landing film"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
+  </section>
+  <SiteHeader home />
+  <main class="home-intro-main">
+    <section class="home-hero" aria-labelledby="home-title">
+      <h1 id="home-title">We design meaningful spaces that connect people, place, and story—across every scale and typology.</h1>
+      <a class="text-link" href="/about">Discover the studio <span aria-hidden="true">↗</span></a>
+    </section>
+  </main>
+
+  <main class="home-projects-main">
+    <div class="sticky-section-line home-selected-line" aria-hidden="true"></div>
+    <section class="project-grid work-grid home-selected-work" aria-label="Selected projects">
+      {projects.map((project) => (
+        <div class="filter-item">
+          <ProjectCard
+            href={`/projects/${project.slug}`}
+            title={project.title}
+            year={project.year}
+            location=""
+            typology={project.types}
+            cover={project.cover}
+            coverFrames={project.coverFrames}
+            coverAlt={project.coverAlt}
+            video={project.video}
+            projectTransition
+          />
+        </div>
+      ))}
+    </section>
+    <script is:inline>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const slug = params.get('return');
+        if (!slug) return;
+
+        window.history.scrollRestoration = 'manual';
+
+        const targetPath = `/projects/${slug}`;
+        const targetLink = Array.from(document.querySelectorAll('a[data-project-transition]'))
+          .find((link) => new URL(link.href, window.location.href).pathname === targetPath);
+        const targetFigure = targetLink?.querySelector('figure');
+        if (!targetFigure) return;
+
+        document.documentElement.classList.add('project-return-transition');
+        document.documentElement.dataset.projectReturn = slug;
+        document.documentElement.dataset.projectReturnScrollY = params.get('scrollY') ?? '';
+        document.documentElement.dataset.projectReturnTop = params.get('top') ?? '';
+        targetFigure.style.viewTransitionName = 'project-hero';
+      })();
+    </script>
+
+    <div class="home-note-divider" aria-hidden="true"></div>
+    <section class="home-note">
+      <p>JAAX IS AN ARCHITECTURE AND DESIGN PRACTICE WORKIN GLOBALLY FROM LOS ANGELES AND NEW YORK.</p>
+      <a class="text-link" href="/contact">Start a conversation <span aria-hidden="true">↗</span></a>
+    </section>
+  </main>
+  <script>
+    import { initHomePageTransitions } from '../scripts/homePageTransitions';
+    import { setupProjectGalleryOverlap } from '../scripts/projectGalleryOverlap';
+    import { setupProjectPageTransitions } from '../scripts/projectPageTransition';
+    import { setupProjectImageLoops } from '../scripts/projectImageLoop';
+    import { setupBottomScrollLock } from '../scripts/bottomScrollLock';
+
+    const player = document.querySelector<HTMLIFrameElement>('#landing-player');
+    const sendPlayerCommand = (command: 'mute' | 'playVideo') => {
+      player?.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: command, args: [] }),
+        'https://www.youtube.com',
+      );
+    };
+
+    const startFilm = () => {
+      sendPlayerCommand('mute');
+      sendPlayerCommand('playVideo');
+    };
+
+    player?.addEventListener('load', startFilm);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') startFilm();
+    });
+
+    const selectedGrid = document.querySelector<HTMLElement>('.home-selected-work');
+    const selectedItems = selectedGrid
+      ? Array.from(selectedGrid.querySelectorAll<HTMLElement>('.filter-item'))
+      : [];
+    const syncSelectedGalleryOverlap = selectedGrid
+      ? setupProjectGalleryOverlap(selectedGrid)
+      : () => {};
+
+    const layoutSelectedProjects = () => {
+      if (!selectedGrid) return;
+      selectedGrid.replaceChildren();
+      selectedItems.forEach((item, index) => {
+        item.classList.remove('is-shorter');
+        const row = document.createElement('div');
+        row.className = `project-gallery-row ${index % 2 === 0 ? 'is-left' : 'is-right'}`;
+        row.append(item);
+        selectedGrid.append(row);
+      });
+      syncSelectedGalleryOverlap();
+    };
+
+    layoutSelectedProjects();
+    setupProjectImageLoops();
+    setupProjectPageTransitions();
+    initHomePageTransitions();
+    setupBottomScrollLock();
+  </script>
+</BaseLayout>

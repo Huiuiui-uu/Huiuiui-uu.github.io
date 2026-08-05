@@ -1,0 +1,210 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getProjectCatalog, PROJECT_CATEGORIES } from '../data/projectCatalog';
+
+const categories = PROJECT_CATEGORIES;
+const projects = getProjectCatalog();
+---
+
+<BaseLayout title="Work — JAAX" description="Selected architecture, hospitality, residential and research projects by JAAX.">
+  <SiteHeader />
+  <main class="inner-page work-page" id="work-top">
+    <div class="work-controls">
+      <details class="sort-menu">
+        <summary>Sort</summary>
+        <div class="sort-menu__options" role="group" aria-label="Sort projects">
+          <button type="button" data-sort="year" aria-pressed="true">By Year</button>
+          <button type="button" data-sort="az" aria-pressed="false">A–Z</button>
+          <button type="button" data-sort="za" aria-pressed="false">Z–A</button>
+        </div>
+      </details>
+    </div>
+
+    <div class="work-filter-menu" data-work-filter-menu aria-hidden="true">
+      <div class="work-filter-menu__inner">
+        <div class="filters" role="group" aria-label="Filter work by type">
+          {categories.map((category) => <button type="button" data-filter={category} aria-pressed={category === 'All'}>{category}</button>)}
+        </div>
+      </div>
+    </div>
+
+    <div class="sticky-section-line" aria-hidden="true"></div>
+    <section class="project-grid work-grid" aria-live="polite">
+      {projects.map((project) => (
+        <div
+          class="filter-item"
+          data-types={project.types.join('::')}
+          data-title={project.title}
+          data-year={project.year}
+        >
+          <ProjectCard
+            href={`/projects/${project.slug}`}
+            title={project.title}
+            year={project.year}
+            location=""
+            typology={project.types}
+            cover={project.cover}
+            coverFrames={project.coverFrames}
+            coverAlt={project.coverAlt}
+            video={project.video}
+            projectTransition
+          />
+        </div>
+      ))}
+    </section>
+    <a class="work-back-to-top" href="#work-top" aria-label="Back to top" title="Back to top"></a>
+    <script is:inline>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const slug = params.get('return');
+        if (!slug) return;
+
+        const targetPath = `/projects/${slug}`;
+        const targetLink = Array.from(document.querySelectorAll('a[data-project-transition]'))
+          .find((link) => new URL(link.href, window.location.href).pathname === targetPath);
+        const targetFigure = targetLink?.querySelector('figure');
+        if (!targetFigure) return;
+
+        document.documentElement.classList.add('project-return-transition');
+        document.documentElement.dataset.projectReturn = slug;
+        document.documentElement.dataset.projectReturnScrollY = params.get('scrollY') ?? '';
+        document.documentElement.dataset.projectReturnTop = params.get('top') ?? '';
+        targetFigure.style.viewTransitionName = 'project-hero';
+      })();
+    </script>
+  </main>
+  <script>
+    import { setupProjectGalleryOverlap } from '../scripts/projectGalleryOverlap';
+    import { setupProjectPageTransitions } from '../scripts/projectPageTransition';
+    import { setupProjectImageLoops } from '../scripts/projectImageLoop';
+    import { setupBottomScrollLock } from '../scripts/bottomScrollLock';
+
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const sortButtons = document.querySelectorAll<HTMLButtonElement>('[data-sort]');
+    const sortMenu = document.querySelector<HTMLDetailsElement>('.sort-menu');
+    const workMenuTrigger = document.querySelector<HTMLElement>('[data-work-menu-trigger]');
+    const workFilterMenu = document.querySelector<HTMLElement>('[data-work-filter-menu]');
+    const workSectionLine = document.querySelector<HTMLElement>('.work-page .sticky-section-line');
+    const grid = document.querySelector<HTMLElement>('.work-grid');
+    const items = Array.from(document.querySelectorAll<HTMLElement>('.filter-item'));
+    const syncGalleryOverlap = grid ? setupProjectGalleryOverlap(grid) : () => {};
+    const requestedFilter = new URLSearchParams(window.location.search).get('filter');
+    let activeFilter = Array.from(buttons).some((button) => button.dataset.filter === requestedFilter)
+      ? requestedFilter ?? 'All'
+      : 'All';
+    let activeSort = 'year';
+    let menuCloseTimer = 0;
+    let menuHintTimer = 0;
+
+    const setFilterMenuOpen = (open: boolean) => {
+      window.clearTimeout(menuCloseTimer);
+      if (open) window.clearTimeout(menuHintTimer);
+      document.documentElement.classList.toggle('work-filter-menu-open', open);
+      workFilterMenu?.setAttribute('aria-hidden', String(!open));
+      if (workFilterMenu) workFilterMenu.inert = !open;
+    };
+
+    const syncFilterMenuAnchor = () => {
+      if (!workMenuTrigger) return;
+      document.documentElement.style.setProperty(
+        '--work-filter-menu-content-start',
+        `${workMenuTrigger.getBoundingClientRect().left}px`,
+      );
+    };
+
+    const syncFilterMenuHeight = () => {
+      if (!workSectionLine || window.scrollY > 1) return;
+      const headerHeight = document.querySelector<HTMLElement>('.site-header')?.offsetHeight
+        ?? (Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--site-header-height')) || 0);
+      const lineDocumentTop = workSectionLine.getBoundingClientRect().top + window.scrollY;
+      document.documentElement.style.setProperty(
+        '--work-filter-menu-height',
+        `${Math.max(0, lineDocumentTop - headerHeight)}px`,
+      );
+    };
+
+    const scheduleFilterMenuClose = () => {
+      window.clearTimeout(menuCloseTimer);
+      menuCloseTimer = window.setTimeout(() => setFilterMenuOpen(false), 120);
+    };
+
+    const layoutProjects = () => {
+      if (!grid) return;
+      const visibleItems = items.filter((item) => {
+        const visible = activeFilter === 'All' || item.dataset.types?.split('::').includes(activeFilter);
+        item.hidden = !visible;
+        return visible;
+      });
+
+      visibleItems.sort((a, b) => {
+        const titleA = a.dataset.title ?? '';
+        const titleB = b.dataset.title ?? '';
+        if (activeSort === 'az') return titleA.localeCompare(titleB);
+        if (activeSort === 'za') return titleB.localeCompare(titleA);
+        return Number(b.dataset.year ?? 0) - Number(a.dataset.year ?? 0)
+          || titleA.localeCompare(titleB);
+      });
+
+      grid.replaceChildren();
+      visibleItems.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = `project-gallery-row ${index % 2 === 0 ? 'is-left' : 'is-right'}`;
+        row.append(item);
+        grid.append(row);
+      });
+      syncGalleryOverlap();
+    };
+
+    buttons.forEach((button) => button.addEventListener('click', () => {
+      activeFilter = button.dataset.filter ?? 'All';
+      buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      const params = new URLSearchParams(window.location.search);
+      if (activeFilter === 'All') params.delete('filter');
+      else params.set('filter', activeFilter);
+      const search = params.toString();
+      window.history.replaceState({}, '', `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`);
+      layoutProjects();
+      setFilterMenuOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }));
+
+    sortButtons.forEach((button) => button.addEventListener('click', () => {
+      activeSort = button.dataset.sort ?? 'year';
+      sortButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      if (sortMenu) sortMenu.open = false;
+      layoutProjects();
+    }));
+
+    workFilterMenu && (workFilterMenu.inert = true);
+    workMenuTrigger?.addEventListener('pointerenter', () => setFilterMenuOpen(true));
+    workMenuTrigger?.addEventListener('pointerleave', scheduleFilterMenuClose);
+    workMenuTrigger?.addEventListener('focusout', scheduleFilterMenuClose);
+    workFilterMenu?.addEventListener('pointerenter', () => setFilterMenuOpen(true));
+    workFilterMenu?.addEventListener('pointerleave', scheduleFilterMenuClose);
+    workMenuTrigger?.addEventListener('focusin', () => setFilterMenuOpen(true));
+    workFilterMenu?.addEventListener('focusout', (event) => {
+      const nextTarget = event.relatedTarget as Node | null;
+      if (!nextTarget || !workFilterMenu.contains(nextTarget)) scheduleFilterMenuClose();
+    });
+
+    syncFilterMenuAnchor();
+    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.filter === activeFilter)));
+    layoutProjects();
+    syncFilterMenuHeight();
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      window.setTimeout(() => {
+        setFilterMenuOpen(true);
+        menuHintTimer = window.setTimeout(() => setFilterMenuOpen(false), 1800);
+      }, 120);
+    }
+    window.addEventListener('resize', () => {
+      syncFilterMenuAnchor();
+      syncFilterMenuHeight();
+    }, { passive: true });
+    setupProjectImageLoops();
+    setupProjectPageTransitions();
+    setupBottomScrollLock();
+  </script>
+</BaseLayout>

@@ -1,0 +1,9 @@
+title: Stan at MPX
+year: 2023
+categories: Cultural, Concept Development 
+home: no
+website:
+intro:
+Upon their decision to host Stan within their premises, MPX Gallery had no intention of presenting it within a conventional, natural history museum-style setting. JAAX took the initiative to create an immersive environment implementing AR technology. 
+
+This immersive space was designed to replicate the visual and auditory ambiance of the era in which Tyrannosauruses once roamed- strategic placement of mirrors and LED screens was employed, providing viewers with a 360-degree perspective of Stan, as well as the three-dimensional projection of its skin on Stan’s skeleton from certain view angles.

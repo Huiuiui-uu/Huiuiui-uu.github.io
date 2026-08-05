@@ -1,0 +1,50 @@
+---
+interface Props {
+  slug?: string;
+  href?: string;
+  title: string;
+  year: string | number;
+  location: string;
+  typology: string[];
+  excerpt?: string;
+  cover: string;
+  coverFrames?: string[];
+  coverAlt: string;
+  video?: string;
+  projectTransition?: boolean;
+}
+
+const { slug, href, title, year, location, typology, excerpt, cover, coverFrames = [], coverAlt, video = '', projectTransition = false } = Astro.props;
+const projectHref = href ?? (slug ? `/projects/${slug}` : undefined);
+const CardContent = projectHref ? 'a' : 'div';
+---
+
+<article class="project-card">
+  <CardContent
+    class="project-card__link"
+    href={projectHref}
+    aria-label={projectHref ? `View ${title}` : undefined}
+    data-project-transition={projectTransition ? '' : undefined}
+  >
+    <figure>
+      {video ? (
+        <iframe
+          class="project-card-video"
+          src={video}
+          title={`${title} film`}
+          allow="autoplay; fullscreen; picture-in-picture"
+          aria-hidden="true"
+          tabindex="-1"
+        ></iframe>
+      ) : (
+        <img class:list={{ 'project-image-loop': coverFrames.length > 1 }} src={cover} alt={coverAlt} loading="lazy" decoding="async" data-image-loop={coverFrames.length > 1 ? JSON.stringify(coverFrames) : undefined} />
+      )}
+    </figure>
+    <div class="project-card__meta">
+      <h2>{title}</h2>
+      <p>{typology[0] ?? location}</p>
+      <p>{year}</p>
+    </div>
+    {excerpt && <p class="project-card__excerpt">{excerpt}</p>}
+  </CardContent>
+</article>

@@ -1,0 +1,11 @@
+title: Saks Fifth Avenue New York
+year: 2017
+categories: Commercial
+home: no
+website:
+intro:
+Jinsa Yoon / Completed while at OMA.
+Photography by Justin Bridges Photography.
+
+“The department store’s allure has always been its social aspect - even before people could shop on the internet. And escalators are great devices for people-watching, and sometimes even flirtation. Saks’s renovations will create more openness and encourage people to enter the physical store” - Rem Koolhaas.
+

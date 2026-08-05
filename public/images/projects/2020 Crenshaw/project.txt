@@ -1,0 +1,7 @@
+title: Crenshaw
+year: 2020
+categories: Mixed-Use, Residential
+home: yes
+website:
+intro:
+Schematic design and entitlement for a 233,000-sf mixed-use development with 264 residential units and 27,000-sf commercial space in Los Angeles.

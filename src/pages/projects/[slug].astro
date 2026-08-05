@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjectCatalog } from '../../data/projectCatalog';
+
+export async function getStaticPaths() {
+  return getProjectCatalog().map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const title = project.title;
+const description = project.intro || `${title} by JAAX.`;
+const introParagraphs = project.intro.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
+const coverAlt = project.coverAlt;
+---
+
+<BaseLayout
+  title={`${title} — JAAX`}
+  description={description}
+>
+  <main class:list={['project-detail-page', { 'is-single-image': project.gallery.length === 0 }]}>
+    <header class="project-detail-masthead">
+      <a class="project-detail-back" href={`/work?return=${project.slug}`} data-project-return={project.slug}>Back</a>
+      <h1 class="visually-hidden">{title}</h1>
+    </header>
+
+    <div class="project-detail-rule" aria-hidden="true"></div>
+
+    <section class="project-detail-grid" aria-label={`${title} project details`}>
+      <div class="project-detail-media">
+        <figure class="project-detail-hero" style="view-transition-name: project-hero;">
+          {project.video ? (
+            <iframe
+              class="project-detail-video"
+              src={project.video}
+              title={`${title} film`}
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          ) : (
+            <img class:list={{ 'project-image-loop': project.coverFrames.length > 1 }} src={project.cover} alt={coverAlt} fetchpriority="high" data-image-loop={project.coverFrames.length > 1 ? JSON.stringify(project.coverFrames) : undefined} />
+          )}
+        </figure>
+
+        {project.gallery.map((image) => (
+          <figure class="project-detail-image">
+            <img class:list={{ 'project-image-loop': image.frames.length > 1 }} src={image.src} alt={image.alt} loading="lazy" decoding="async" data-image-loop={image.frames.length > 1 ? JSON.stringify(image.frames) : undefined} />
+          </figure>
+        ))}
+      </div>
+
+      <aside class="project-detail-copy">
+        <article class="project-detail-prose body-copy">
+          {introParagraphs.length > 0 ? introParagraphs.map((paragraph) => <p>{paragraph}</p>) : (
+            <>
+              <p>This placeholder introduces {title} and the spatial ideas behind the project. The final text can describe the existing conditions, design approach and relationship to its surrounding context.</p>
+              <p>The project narrative can continue here with notes on material, light, circulation and custom elements. This column is ready for the verified project description without changing the page layout.</p>
+              <p>Additional credits, collaborators and photography information can be added once the final project material is confirmed.</p>
+            </>
+          )}
+          {project.website && <p><a href={project.website} target="_blank" rel="noreferrer">Project website ↗</a></p>}
+        </article>
+      </aside>
+    </section>
+
+    <footer class="project-detail-footer">
+      <p>© 2024 JAAX</p>
+    </footer>
+  </main>
+  <script>
+    import { setupProjectImageLoops } from '../../scripts/projectImageLoop';
+
+    setupProjectImageLoops();
+
+    const backLink = document.querySelector<HTMLAnchorElement>('[data-project-return]');
+    let returnStarted = false;
+
+    if (backLink) {
+      const projectParams = new URLSearchParams(window.location.search);
+      const scrollY = projectParams.get('fromY');
+      const figureTop = projectParams.get('fromTop');
+      const sourcePage = projectParams.get('from');
+      const activeFilter = projectParams.get('filter');
+      const returnUrl = new URL(sourcePage === 'home' ? '/' : '/work', window.location.origin);
+      const slug = backLink.dataset.projectReturn;
+
+      if (slug) returnUrl.searchParams.set('return', slug);
+      if (scrollY) returnUrl.searchParams.set('scrollY', scrollY);
+      if (figureTop) returnUrl.searchParams.set('top', figureTop);
+      if (activeFilter && sourcePage !== 'home') returnUrl.searchParams.set('filter', activeFilter);
+      backLink.href = returnUrl.href;
+
+      if (scrollY || figureTop) {
+        window.history.replaceState({}, '', `${window.location.pathname}${window.location.hash}`);
+      }
+    }
+
+    backLink?.addEventListener('click', (event) => {
+      if (returnStarted || event.defaultPrevented || event.button !== 0
+        || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
+        || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const slug = backLink.dataset.projectReturn;
+      if (!slug) return;
+
+      event.preventDefault();
+      returnStarted = true;
+      document.documentElement.classList.add('project-return-transition');
+      document.querySelector<HTMLElement>('.project-detail-hero')
+        ?.style.setProperty('view-transition-name', 'project-hero');
+
+      // Let the return state paint before the browser captures the old page.
+      document.documentElement.getBoundingClientRect();
+      window.requestAnimationFrame(() => window.location.assign(backLink.href));
+    });
+  </script>
+</BaseLayout>

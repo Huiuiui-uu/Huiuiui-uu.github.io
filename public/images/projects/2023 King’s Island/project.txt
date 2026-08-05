@@ -1,0 +1,9 @@
+title: King’s Island
+year: 2023
+categories: Concept Development, Cultural, Hotel, Hospitality
+home: no
+website:
+intro:
+Concept development for a six-star resort development on King’s Island on the south coast of Korea. 
+
+Currently in schematic design- more information and images to come.

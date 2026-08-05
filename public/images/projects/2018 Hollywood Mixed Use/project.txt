@@ -1,0 +1,9 @@
+title: Hollywood Mixed-Use
+year: 2018
+categories: Mixed-Use, Residential, Workplace, Commercial, Hotel
+home: yes
+website:
+intro:
+560,000-sf mixed-use development at a major intersection in Hollywood. Project consists of 298 residential units, a 115-key hotel and 123,500-sf of office space.
+
+Jinsa Yoon / Completed while at Gensler.

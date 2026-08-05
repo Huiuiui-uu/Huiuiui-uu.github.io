@@ -1,0 +1,10 @@
+title: Varna Library
+year: 2016
+categories: Cultural
+home: tes
+website:
+intro:
+Design proposal for a new library design in Varna, Bulgaria.
+
+Competition entry.
+

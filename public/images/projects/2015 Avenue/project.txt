@@ -1,0 +1,8 @@
+title: Avenue
+year: 2015
+categories: Commercial
+home: yes
+website:
+intro:
+Prototype design development for Avenue showrooms / first implementation at Avenue Daegu.
+

@@ -1,0 +1,7 @@
+title: Diners Arena at Paradise Hotel Incheon
+year: 2021
+categories: Hospitality, Restaurant
+home: no
+website:
+intro:
+6,000-sf food and entertainment hall design and rebranding for Paradise Hotel Incheon.

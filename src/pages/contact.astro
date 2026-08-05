@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<BaseLayout title="Contact — JAAX" description="Contact JAAX in Los Angeles and New York.">
+  <SiteHeader />
+  <main class="inner-page contact-page">
+    <header class="page-title">
+      <h1>Contact</h1>
+    </header>
+
+    <div class="sticky-section-line" aria-hidden="true"></div>
+    <section class="office-grid" aria-label="JAAX offices">
+      <div class="office-grid__locations">
+        <article>
+          <p class="eyebrow">Los Angeles</p>
+          <address class="body-copy">691 Mill Street<br />Unit A<br />Los Angeles, California 90021<br />United States</address>
+          <p class="body-copy"><a href="tel:+12132657111">+1 213 265 7111</a></p>
+        </article>
+        <article>
+          <p class="eyebrow">New York</p>
+          <address class="body-copy">1270 Broadway<br />Suite 906<br />New York, New York 10001<br />United States</address>
+          <p class="body-copy"><a href="tel:+16463471224">+1 646 347 1224</a></p>
+        </article>
+      </div>
+
+      <article class="office-grid__inquiries">
+        <div class="body-copy contact-inquiries">
+          <p>General inquiries:<br /><a href="mailto:info@jaax.co">info@jaax.co</a></p>
+          <p>Press inquiries:<br /><a href="mailto:info@jaax.co">info@jaax.co</a></p>
+          <p>Employment:<br /><a href="mailto:info@jaax.co">info@jaax.co</a></p>
+        </div>
+      </article>
+    </section>
+
+    <footer class="social-links">
+      <a href="https://www.instagram.com/jaax.co/" target="_blank" rel="noreferrer">Instagram ↗</a>
+      <a href="https://www.linkedin.com/company/jaax-la" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+    </footer>
+  </main>
+  <script>
+    import { setupBottomScrollLock } from '../scripts/bottomScrollLock';
+
+    setupBottomScrollLock();
+  </script>
+</BaseLayout>

@@ -1,0 +1,9 @@
+title: Seaport
+year: 2016
+categories: Mixed-Use, Commercial, Workplace
+home: no
+website:
+intro:
+40,000-sf of office space and 5,600-sf retail space at Boston’s Seaport District.
+
+Jinsa Yoon / Completed while at OMA  

@@ -1,0 +1,7 @@
+title: n/soto
+year: 2021
+categories: Hospitality, Restaurant
+home: yes
+website: https://n-soto.com/
+intro:
+For Chef Niki Nakayama’s new restaurant for a more casual dining experience in an izakaya setting, JAAX collaborated with DOMM to design its new extended dining area.

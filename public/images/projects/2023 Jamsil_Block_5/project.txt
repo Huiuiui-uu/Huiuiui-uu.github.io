@@ -1,0 +1,9 @@
+title: Jamsil Block 5
+year: 2023
+categories: Masterplan, Mixed-Use, Residential, Workplace, Commercial
+home: yes
+website:
+intro:
+JAAX collaborated with Tomoon Architects on the conceptual design for the redevelopment of a block in Songpa district of Seoul.
+
+The scope included the masterplan of the riverfront block that spans 358,077sm, and the facade design of 36 towers that house commercial, retail and 12,500 residential units.

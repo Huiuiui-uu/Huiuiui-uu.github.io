@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<BaseLayout title="About — JAAX" description="About JAAX, an architecture and design practice in Los Angeles and New York.">
+  <SiteHeader />
+  <main class="inner-page about-page">
+    <section class="about-intro-panel">
+      <header class="page-title">
+        <h1>Jinsa + Architects</h1>
+      </header>
+
+      <div class="sticky-section-line" aria-hidden="true"></div>
+      <div class="about-sections">
+        <section class="about-section about-introduction" aria-label="About JAAX">
+          <div class="about-section__left">
+            <div class="intro-copy about-copy">
+              <p>We are architects, designers and researchers dedicated to creating beautiful and meaningful spaces that comfort, encourage and intrigue.</p>
+              <p>Our spaces reflect our clients’ visions and respond to their historical and physical contexts. The stories we want to tell are not confined to a specific scale or typology.</p>
+              <p>We are located in Los Angeles and New York, and work globally with partners in Seoul, Taipei and Tokyo. We also work closely with <a href="http://optivlabs.ai/" target="_blank" rel="noreferrer">Optiv Labs</a>, a provider of innovative wellness hubs and related services.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="about-team-panel" aria-label="JAAX team page">
+      <div class="about-sections">
+        <section class="about-section team-section" aria-label="JAAX team">
+          <div class="about-section__left team-bio" id="jinsa-bio" hidden>
+            <div class="body-copy">
+              <p>Jinsa Yoon, AIA, LEED AP, founded the office in 2019 after working at Gensler, OMA, SANAA and Rottet Studio. He holds a Master of Architecture from the Southern California Institute of Architecture and a Bachelor of Arts in Architecture from the University of California, Berkeley.</p>
+              <p>Jinsa is also a founding partner of <a href="https://amuprojects.com/" target="_blank" rel="noreferrer">AMU Projects</a>, a design and manufacturing studio developing prefabricated solutions for interdisciplinary challenges.</p>
+            </div>
+          </div>
+
+          <div class="about-section__right">
+            <div class="team-grid">
+              <button class="team-member team-member--button" type="button" data-team-bio="jinsa" aria-controls="jinsa-bio" aria-expanded="false" aria-label="Show Jinsa Yoon biography">
+                <span class="team-member__placeholder" role="img" aria-label="Portrait placeholder for Jinsa Yoon"></span>
+              </button>
+              {Array.from({ length: 5 }, (_, index) => (
+                <button class="team-member team-member--button" type="button" data-team-bio={`placeholder-${index + 2}`} aria-controls="jinsa-bio" aria-expanded="false" aria-label={`Show team member ${index + 2} biography`}>
+                  <span class="team-member__placeholder" role="img" aria-label={`Portrait placeholder for team member ${index + 2}`}></span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script>
+    import { initAboutPageTransitions } from '../scripts/aboutPageTransitions';
+
+    const bioToggles = document.querySelectorAll<HTMLButtonElement>('[data-team-bio]');
+    const jinsaBio = document.querySelector<HTMLElement>('#jinsa-bio');
+    const bioContent = jinsaBio?.querySelector<HTMLElement>('.body-copy');
+    const jinsaBioMarkup = bioContent?.innerHTML ?? '';
+    const placeholderBioMarkup = '<p>Team member biography coming soon.</p>';
+
+    bioToggles.forEach((toggle) => toggle.addEventListener('click', () => {
+      if (!jinsaBio || !bioContent) return;
+
+      const key = toggle.dataset.teamBio ?? 'placeholder';
+      const willOpen = jinsaBio.hidden || jinsaBio.dataset.activeBio !== key;
+      jinsaBio.hidden = !willOpen;
+      jinsaBio.dataset.activeBio = willOpen ? key : '';
+      if (willOpen) bioContent.innerHTML = key === 'jinsa' ? jinsaBioMarkup : placeholderBioMarkup;
+      bioToggles.forEach((button) => button.setAttribute('aria-expanded', String(willOpen && button === toggle)));
+    }));
+
+    initAboutPageTransitions();
+  </script>
+</BaseLayout>

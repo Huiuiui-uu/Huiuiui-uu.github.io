@@ -1,0 +1,7 @@
+title: North Phuket Resorts
+year: 2023
+categories: Hospitality, Cultural, Concept Development, Masterplan
+home: yes
+website:
+intro:
+Concept development and planning for a 46-acre beachfront lot nestled in a serene bay in North Phuket. 

@@ -1,0 +1,7 @@
+title: Maiku Headquarters
+year: 2022
+categories: Workplace, Commercial
+home: yes
+website:
+intro:
+A 9,600sf ground-up office building in Kobe for Maiku, a beef wholesale distributor. The office features a showroom and a small kitchen/laboratory on the ground floor, and offices on levels 2 through 4.

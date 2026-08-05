@@ -1,0 +1,8 @@
+title: MGC Flagship
+year: 2023
+categories: Commercial
+home: no
+website:
+intro:
+This placeholder introduces MGC Flagship and is ready to be replaced with the final project narrative.
+

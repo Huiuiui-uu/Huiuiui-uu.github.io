@@ -1,0 +1,8 @@
+title: Softbank
+year: 2015
+categories: Commercial
+home: no
+website:
+intro:
+Prototype design for Softbank stores in the Greater Tokyo area.
+

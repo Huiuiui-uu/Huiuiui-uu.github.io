@@ -1,0 +1,9 @@
+title: Apollo
+year: 2021
+categories: Hospitality, Restaurant
+home: no
+website:
+intro:
+There is a physical aquarium on one side while the opposite wall showcases a digital counterpart in this 7,400-sf basement bar & lounge in Lima, Peru. This concept of duality extends to the floor and ceiling design, where the raised patterns on the ceiling transform into luminous fixtures, while the corresponding patterns on the floor evolve into illuminated seating, creating a mirroring effect between the two surfaces.
+
+The juxtaposition of the physical and digital aquariums, along with the seamless connection between the ceiling lights and floor seats, creates an intriguing blend of the natural and the artificial, providing an interesting sensory experience for the users.

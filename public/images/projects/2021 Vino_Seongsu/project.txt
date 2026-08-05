@@ -1,0 +1,10 @@
+title: Vino
+year: 2021
+categories: Commercial
+home: no
+website:
+intro:
+A gut renovation of a leatherwork factory in what is now the trendiest neighborhood of Seoul, Vino Seongsu features a wine shop and a restaurant on the ground floor, and a large cellar with tasting rooms in the basement. The building's parking lot currently serves as the site for Dior Seongsu.
+
+Images and project description coming soon.
+

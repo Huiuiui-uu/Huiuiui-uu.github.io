@@ -1,0 +1,7 @@
+title: n/naka
+year: 2019
+categories: Commercial
+home: yes
+website: https://n-naka.com/
+intro:
+Collaborative effort with DOMM for the dining area renovation, lighting design, and the proposal for floor addition for Michelin-starred chef Niki Nakayama’s restaurant in Los Angeles.

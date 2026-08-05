@@ -1,0 +1,8 @@
+title: Angelo House
+year: 2020
+categories: Residential
+home: yes
+website:
+intro:
+5,500-sf residence on the hills of Los Angeles.
+

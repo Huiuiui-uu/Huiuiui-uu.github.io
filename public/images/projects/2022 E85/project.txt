@@ -1,0 +1,10 @@
+title: E85 - Upstate New York Retail + Arts Complex
+year: 2022
+categories: Commercial, Cultural
+home: no
+website:
+intro:
+A ground-up retail and arts complex on a 100,000sf hillside lot in a quiet upstate New York town.
+
+More information and images coming soon.
+

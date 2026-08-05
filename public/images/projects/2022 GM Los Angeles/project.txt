@@ -1,0 +1,8 @@
+title: Gentle Monster Los Angeles
+year: 2022
+categories: Commercial
+home: yes
+website:
+intro:
+Photography by Gentle Monster & JAAX.
+

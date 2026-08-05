@@ -1,0 +1,7 @@
+title: Western Studios
+year: 2019
+categories: Workplace, Commercial
+home: no
+website:
+intro:
+A 8,800-sf space of co-working space comprised of hot desks, meeting rooms, 3,500-sf of event space/lounge and studios for streamers in Los Angeles.

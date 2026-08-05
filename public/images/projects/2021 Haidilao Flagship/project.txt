@@ -1,0 +1,8 @@
+title: Haidilao Manhattan Flagship
+year: 2021
+categories: Hospitality, Restaurant
+home: no
+website:
+intro:
+Images and project description coming soon.
+

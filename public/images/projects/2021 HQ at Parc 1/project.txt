@@ -1,0 +1,7 @@
+title: Headquarters at Parc 1
+year: 2021
+categories: Workplace
+home: yes
+website:
+intro:
+Interior design for a confidential fintech company located inside Parc1, Yeouido. A space of 13,400sf was designed to allow for future expansion, while ensuring distinct separation among different departments within the company.

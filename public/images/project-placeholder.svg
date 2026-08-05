@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Project image coming soon</title>
+  <desc id="desc">A warm gray field reserved for project imagery.</desc>
+  <rect width="1600" height="1000" fill="#d9d7d0"/>
+  <path d="M0 1000 1600 0" stroke="#cbc8c0" stroke-width="2"/>
+  <circle cx="800" cy="500" r="96" fill="none" stroke="#c3c0b7" stroke-width="2"/>
+</svg>

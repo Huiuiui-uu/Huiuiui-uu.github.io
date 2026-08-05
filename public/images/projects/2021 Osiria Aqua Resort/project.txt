@@ -1,0 +1,10 @@
+title: Osiria Aqua Resorts
+year: 2021
+categories: Hospitality, Hotel
+home: no
+website:
+intro:
+Collaboration with JAA.
+
+Images and project description coming soon.
+

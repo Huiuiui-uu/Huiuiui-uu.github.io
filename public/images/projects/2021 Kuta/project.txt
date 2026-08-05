@@ -1,0 +1,10 @@
+title: Kuta
+year: 2021
+categories: Hospitality, Restaurant
+home: no
+website:
+intro:
+Restaurant and bar with an outdoor seating by the pool near Kuta Beach.
+
+More images coming soon.
+

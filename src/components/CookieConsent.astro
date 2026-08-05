@@ -1,0 +1,48 @@
+<div class="cookie-consent" data-cookie-consent hidden>
+  <section class="cookie-consent__panel" role="dialog" aria-modal="true" aria-labelledby="cookie-consent-title">
+    <div class="cookie-consent__column cookie-consent__choice">
+      <h2 id="cookie-consent-title">This website uses cookies</h2>
+      <div class="cookie-consent__actions">
+        <button type="button" data-cookie-choice="accepted">Accept</button>
+        <button type="button" data-cookie-choice="rejected">Do not accept</button>
+      </div>
+    </div>
+
+    <div class="cookie-consent__column cookie-consent__copy">
+      <p>We use cookies and related technologies to support embedded media, understand site traffic and improve your experience. You can accept or decline optional cookies.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  const consent = document.querySelector<HTMLElement>('[data-cookie-consent]');
+  const consentButtons = consent?.querySelectorAll<HTMLButtonElement>('[data-cookie-choice]');
+  const storageKey = 'jaax-cookie-consent';
+
+  let savedChoice: string | null = null;
+  try {
+    savedChoice = localStorage.getItem(storageKey);
+  } catch {
+    savedChoice = null;
+  }
+
+  if (consent && !savedChoice) {
+    consent.hidden = false;
+    document.body.classList.add('cookie-consent-open');
+    consent.querySelector<HTMLButtonElement>('[data-cookie-choice]')?.focus();
+  }
+
+  consentButtons?.forEach((button) => {
+    button.addEventListener('click', () => {
+      const choice = button.dataset.cookieChoice ?? 'rejected';
+      try {
+        localStorage.setItem(storageKey, choice);
+      } catch {
+        // The banner can still close when browser storage is unavailable.
+      }
+      consent?.setAttribute('hidden', '');
+      document.body.classList.remove('cookie-consent-open');
+      window.dispatchEvent(new CustomEvent('jaax:cookie-consent', { detail: { choice } }));
+    });
+  });
+</script>
