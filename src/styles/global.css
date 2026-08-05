@@ -621,10 +621,22 @@ main { padding: 0 var(--page-x) var(--page-x); }
 .about-introduction {
   height: 100%;
   min-height: 0;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--project-gallery-row-gap);
 }
 .about-introduction .about-section__left {
   display: flex;
+  grid-column: 1 / 7;
   align-items: center;
+}
+.about-introduction .about-introduction__media {
+  display: flex;
+  grid-column: 9 / 12;
+  align-items: center;
+}
+.about-introduction__media img {
+  width: 100%;
+  height: auto;
 }
 .about-section + .about-section {
   border-top: 0;
@@ -1453,6 +1465,8 @@ html.project-return-transition::view-transition-group(project-hero) {
   .team-section > .about-section__right { grid-column: 1; }
   .team-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .about-introduction { height: auto; min-height: 0; }
+  .about-introduction .about-section__left,
+  .about-introduction .about-introduction__media { grid-column: 1; }
   .about-section__left, .about-section__right { grid-column: 1; }
   .team-bio { padding-top: 0; }
   .team-bio .body-copy { width: 100%; }
