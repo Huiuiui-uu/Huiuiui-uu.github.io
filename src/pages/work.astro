@@ -90,7 +90,9 @@ const projects = getProjectCatalog();
     const grid = document.querySelector<HTMLElement>('.work-grid');
     const items = Array.from(document.querySelectorAll<HTMLElement>('.filter-item'));
     const syncGalleryOverlap = grid ? setupProjectGalleryOverlap(grid) : () => {};
-    const requestedFilter = new URLSearchParams(window.location.search).get('filter');
+    const workParams = new URLSearchParams(window.location.search);
+    const requestedFilter = workParams.get('filter');
+    const isProjectReturn = workParams.has('return');
     let activeFilter = Array.from(buttons).some((button) => button.dataset.filter === requestedFilter)
       ? requestedFilter ?? 'All'
       : 'All';
@@ -193,7 +195,7 @@ const projects = getProjectCatalog();
     buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.filter === activeFilter)));
     layoutProjects();
     syncFilterMenuHeight();
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!isProjectReturn && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       window.setTimeout(() => {
         setFilterMenuOpen(true);
         menuHintTimer = window.setTimeout(() => setFilterMenuOpen(false), 1800);
